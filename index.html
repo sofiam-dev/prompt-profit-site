@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Profit Club — Монетизируй навыки ИИ</title>
+    <meta name="description" content="Закрытый клуб для фрилансеров, желающих зарабатывать на нейросетях. Уроки, промпты, нетворкинг.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --gray: #64748b;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(236, 72, 153, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+            z-index: -1;
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-btn {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 900px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(99, 102, 241, 0.2);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 50px;
+            font-size: 0.875rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease 0.6s both;
+        }
+
+        .btn-primary {
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            padding: 1rem 2.5rem;
+            background: transparent;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 50px;
+            color: white;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Stats */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-top: 4rem;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease 0.8s both;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Features Section */
+        .section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: var(--gray);
+            font-size: 1.125rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(236, 72, 153, 0.2));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-card p {
+            color: var(--gray);
+        }
+
+        /* Program Section */
+        .program-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .program-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.05));
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .program-card::before {
+            content: attr(data-block);
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 4rem;
+            font-weight: 800;
+            opacity: 0.1;
+            line-height: 1;
+        }
+
+        .program-card h3 {
+            font-size: 1.125rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .program-card ul {
+            list-style: none;
+        }
+
+        .program-card li {
+            padding: 0.5rem 0;
+            color: var(--gray);
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .program-card li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+        }
+
+        /* Expert Section */
+        .expert-section {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.05));
+            border-radius: 30px;
+            padding: 4rem;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .expert-section {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding: 2rem;
+            }
+        }
+
+        .expert-photo {
+            width: 300px;
+            height: 300px;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 3px solid rgba(99, 102, 241, 0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        @media (max-width: 768px) {
+            .expert-photo {
+                width: 200px;
+                height: 200px;
+                margin: 0 auto;
+            }
+        }
+
+        .expert-info h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .expert-role {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .expert-info p {
+            color: var(--gray);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .expert-badges {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .expert-badges {
+                justify-content: center;
+            }
+        }
+
+        .expert-badge {
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50px;
+            font-size: 0.875rem;
+        }
+
+        /* Pricing Section */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 25px;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .pricing-card.featured {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(236, 72, 153, 0.1));
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .pricing-card:hover {
+            border-color: var(--primary);
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.5rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .pricing-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .price span {
+            font-size: 1rem;
+            color: var(--gray);
+            font-weight: 400;
+        }
+
+        .price-period {
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .pricing-features li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .pricing-features li::before {
+            content: "✓";
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(236, 72, 153, 0.1));
+            border-radius: 30px;
+            margin: 4rem 2rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            color: var(--gray);
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: var(--gray);
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* Animations on scroll */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient"></div>
+
+    <nav>
+        <div class="logo">Prompt Profit Club</div>
+        <a href="https://t.me/PromptProfitClub_bot" class="nav-btn">Вступить в клуб</a>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="badge">🚀 Новый набор открыт</div>
+            <h1>Превратите ИИ в <span>источник дохода</span></h1>
+            <p>Закрытый клуб для тех, кто хочет зарабатывать на нейросетях. Уроки, промпты, нетворкинг и поддержка эксперта.</p>
+            <div class="hero-buttons">
+                <a href="https://t.me/PromptProfitClub_bot" class="btn-primary">
+                    Начать зарабатывать →
+                </a>
+                <a href="#program" class="btn-secondary">Смотреть программу</a>
+            </div>
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-number">16</div>
+                    <div class="stat-label">Практических уроков</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">Месяца обучения</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">∞</div>
+                    <div class="stat-label">База промптов</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section fade-in">
+        <div class="section-header">
+            <h2>Что вы получите в клубе</h2>
+            <p>Всё необходимое для старта заработка на ИИ-услугах</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📚</div>
+                <h3>Еженедельные уроки</h3>
+                <p>1 практический урок каждую неделю на платформе GetCourse. От базы до продвинутых техник.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💬</div>
+                <h3>3 чата сообщества</h3>
+                <p>Telegram, VK и Max — выбирайте удобную площадку или общайтесь во всех сразу.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Библиотека промптов</h3>
+                <p>Готовые промпты для любых задач. Обновляется каждый месяц.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔴</div>
+                <h3>Живые эфиры</h3>
+                <p>Ежемесячные разборы проектов участников с ответами на вопросы.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🤝</div>
+                <h3>Нетворкинг</h3>
+                <p>Обмен контактами, коллаборации, поиск партнёров и клиентов внутри сообщества.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🏆</div>
+                <h3>Статус Нейро-Мастер</h3>
+                <p>Особый статус для участников, продлевающих подписку более 3 месяцев.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section fade-in" id="program">
+        <div class="section-header">
+            <h2>Программа обучения</h2>
+            <p>4 блока по 4 урока — от основ до автоматизации</p>
+        </div>
+        <div class="program-grid">
+            <div class="program-card" data-block="01">
+                <h3>Блок 1: Быстрый старт</h3>
+                <ul>
+                    <li>Первые минуты в нейросетях</li>
+                    <li>Карта нейросетей</li>
+                    <li>Обзор Higgsfield</li>
+                    <li>3 способа найти клиента</li>
+                </ul>
+            </div>
+            <div class="program-card" data-block="02">
+                <h3>Блок 2: Визуал и дизайн</h3>
+                <ul>
+                    <li>Midjourney: от А до Я</li>
+                    <li>Идеальные нейрофотосессии</li>
+                    <li>Карточки для маркетплейсов</li>
+                    <li>Перенос одежды на AI-модель</li>
+                </ul>
+            </div>
+            <div class="program-card" data-block="03">
+                <h3>Блок 3: Видео и аватары</h3>
+                <ul>
+                    <li>Создание живого персонажа</li>
+                    <li>AI-аватар через HeyGen</li>
+                    <li>Видео в нейросетях</li>
+                    <li>Контент на 2 недели за час</li>
+                </ul>
+            </div>
+            <div class="program-card" data-block="04">
+                <h3>Блок 4: Автоматизация</h3>
+                <ul>
+                    <li>Claude Code: ИИ-ассистент</li>
+                    <li>Сайты через нейросети</li>
+                    <li>AI-агент по продажам</li>
+                    <li>Презентации за 10 минут</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="section fade-in">
+        <div class="section-header">
+            <h2>Ваш эксперт</h2>
+        </div>
+        <div class="expert-section">
+            <img src="assets/expert.jpg" alt="Софья — эксперт по ИИ" class="expert-photo">
+            <div class="expert-info">
+                <h3>Софья</h3>
+                <div class="expert-role">Эксперт по автоматизации и ИИ</div>
+                <p>Помогаю фрилансерам и предпринимателям внедрять нейросети в работу и зарабатывать на ИИ-услугах.</p>
+                <p>Создаю ботов, автоматизирую процессы, обучаю работе с Claude, ChatGPT, Midjourney и другими инструментами.</p>
+                <div class="expert-badges">
+                    <span class="expert-badge">🤖 AI-автоматизация</span>
+                    <span class="expert-badge">🎨 Нейродизайн</span>
+                    <span class="expert-badge">💻 No-code разработка</span>
+                    <span class="expert-badge">📈 Монетизация ИИ</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section fade-in" id="pricing">
+        <div class="section-header">
+            <h2>Тарифы</h2>
+            <p>Выберите подходящий формат участия</p>
+        </div>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3>1 месяц</h3>
+                <div class="price">2 990 <span>₽</span></div>
+                <div class="price-period">в месяц</div>
+                <ul class="pricing-features">
+                    <li>Доступ ко всем урокам</li>
+                    <li>3 чата сообщества</li>
+                    <li>Библиотека промптов</li>
+                    <li>Ежемесячные эфиры</li>
+                    <li>Поддержка эксперта</li>
+                </ul>
+                <a href="https://t.me/PromptProfitClub_bot" class="btn-primary" style="width: 100%; justify-content: center;">Выбрать</a>
+            </div>
+            <div class="pricing-card featured">
+                <div class="pricing-badge">Выгодно</div>
+                <h3>3 месяца</h3>
+                <div class="price">6 990 <span>₽</span></div>
+                <div class="price-period">за 3 месяца</div>
+                <ul class="pricing-features">
+                    <li>Всё из тарифа "1 месяц"</li>
+                    <li>Экономия 1 980 ₽</li>
+                    <li>Статус "Нейро-Мастер"</li>
+                    <li>Приоритетная поддержка</li>
+                    <li>Бонусные материалы</li>
+                </ul>
+                <a href="https://t.me/PromptProfitClub_bot" class="btn-primary" style="width: 100%; justify-content: center;">Выбрать</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section fade-in">
+        <h2>Готовы начать зарабатывать на ИИ?</h2>
+        <p>Присоединяйтесь к Prompt Profit Club и начните монетизировать навыки уже сегодня</p>
+        <a href="https://t.me/PromptProfitClub_bot" class="btn-primary">
+            Вступить в клуб →
+        </a>
+    </section>
+
+    <footer>
+        <p>© 2024 Prompt Profit Club. Все права защищены.</p>
+        <p style="margin-top: 0.5rem;">
+            <a href="https://t.me/PromptProfitClub_bot">Telegram</a>
+        </p>
+    </footer>
+
+    <script>
+        // Scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
